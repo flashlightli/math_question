@@ -1286,7 +1286,45 @@ class Solution_56:
         return new_list
 
 
-#leetcode 72 编辑距离  word1-->word2所需步骤最少的操作  word1 = "horse", word2 = "ros"  输出: 3
+#leetcode 72 编辑距离  动态规划 word1-->word2所需步骤最少的操作(插入、删除、替换)数目 word1 = "horse", word2 = "ros"  输出: 3
+#画方格图 左--->右 + 1   上------>下  + 1    左上 ----->右下 判断是否相等再+1
 class Solution_72:
     def minDistance(self, word1: str, word2: str) -> int:
+        word1 = list(word1)
+        word2 = list(word2)
+        if not word2:
+            return len(word1)
+        if not word1:
+            return len(word2)
+
+        stash_list = [[0 for item in range(0, len(word2)+1)] for item in range(0, len(word1)+1)]
+        for index, value in enumerate(stash_list[0]):
+            stash_list[0][index] = index
+
+        for index, value in enumerate(stash_list):
+            stash_list[index][0] = index
+
+        for index_1, item_1 in enumerate(word1):
+            for index_2, item_2 in enumerate(word2):
+                if item_2 == item_1:
+                    min_value = min(stash_list[index_1 + 1][index_2]+1, stash_list[index_1][index_2 + 1]+1,
+                                 stash_list[index_1][index_2])
+                    stash_list[index_1+1][index_2+1] = min_value
+                else:
+                    min_value = min(stash_list[index_1 + 1][index_2]+1, stash_list[index_1][index_2 + 1]+1,
+                                 stash_list[index_1][index_2]+1)
+                    stash_list[index_1+1][index_2+1] = min_value
+
+        return stash_list[-1][-1]
+
+
+# demo = Solution_72()        #测试用例 #kitten  sitting          oogoe   oge
+# print(demo.minDistance(word2="oogoe", word1="oge"))
+
+
+#LeetCode 309   最佳买卖股票时机含冷冻期 卖出股票后，你无法在第二天买入股票 (即冷冻期为 1 天)。 对应的交易状态为: [买入, 卖出, 冷冻期, 买入, 卖出]
+class Solution_309:
+    def maxProfit(self, prices) -> int:
         pass
+
+
