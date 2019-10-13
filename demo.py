@@ -1325,6 +1325,28 @@ class Solution_72:
 #LeetCode 309   最佳买卖股票时机含冷冻期 卖出股票后，你无法在第二天买入股票 (即冷冻期为 1 天)。 对应的交易状态为: [买入, 卖出, 冷冻期, 买入, 卖出]
 class Solution_309:
     def maxProfit(self, prices) -> int:
-        pass
+        if not prices or len(prices) == 1:
+            return 0
+
+        second_income = prices[1] - prices[0] if prices[0] <= prices[1] else 0
+        best_income = [0, 0, second_income]
+        for index in range(2, len(prices)):
+            if prices[index] <= prices[index-1]:
+                today_income = best_income[-1]
+                best_income.append(today_income)
+            else:
+                if prices[index-1] >= prices[index-2]:
+                    today_income = best_income[-1] + prices[index] - prices[index-1]
+                    best_income.append(today_income)
+                else:
+                    today_income_1 = best_income[-3] + prices[index] - prices[index - 1]
+                    unsure_value = 0 if (prices[index] - prices[index - 2]) <= 0 else (prices[index] - prices[index - 2])
+                    today_income_2 = best_income[-2] + unsure_value
+                    today_income = max(today_income_1, today_income_2)
+                    best_income.append(today_income)
+
+        return best_income[-1]
 
 
+demo = Solution_309()
+print(demo.maxProfit(prices=[1,2,3,0,2]))
