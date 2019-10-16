@@ -1323,6 +1323,7 @@ class Solution_72:
 
 
 #LeetCode 309   最佳买卖股票时机含冷冻期 卖出股票后，你无法在第二天买入股票 (即冷冻期为 1 天)。 对应的交易状态为: [买入, 卖出, 冷冻期, 买入, 卖出]
+#测试用例  # [6,1,3,2,4,7]   [1,2,3,0,2]
 class Solution_309:
     def maxProfit(self, prices) -> int:
         if not prices or len(prices) == 1:
@@ -1348,5 +1349,19 @@ class Solution_309:
         return best_income[-1]
 
 
-demo = Solution_309()
-print(demo.maxProfit(prices=[1,2,3,0,2]))
+#leetcode_714  买卖股票的最佳时机含手续费 状态机的改变
+class Solution_714:
+    def maxProfit(self, prices, fee):
+        if not prices or len(prices) <= 1:
+            return 0
+
+        cash, hold = 0, -prices[0]
+        for index in range(1, len(prices)):
+            cash = max(cash, hold + prices[index] - fee)
+            hold = max(hold, cash - prices[index])
+
+        return cash
+
+
+demo = Solution_714()
+print(demo.maxProfit(prices=[1, 3, 2, 8, 4, 9], fee=2)) #1 5 9  [1, 3, 2, 8, 4, 9]
