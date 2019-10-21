@@ -1349,7 +1349,7 @@ class Solution_309:
         return best_income[-1]
 
 
-#leetcode_714  买卖股票的最佳时机含手续费 状态机的改变
+# leetcode_714  买卖股票的最佳时机含手续费 状态机的改变
 class Solution_714:
     def maxProfit(self, prices, fee):
         if not prices or len(prices) <= 1:
@@ -1357,11 +1357,65 @@ class Solution_714:
 
         cash, hold = 0, -prices[0]
         for index in range(1, len(prices)):
-            cash = max(cash, hold + prices[index] - fee)
-            hold = max(hold, cash - prices[index])
+            cash = max(cash, hold + prices[index] - fee)        # 目前的现金（从0开始，也就是利润）
+            hold = max(hold, cash - prices[index])              # 除去cash后剩余的钱（包括股票的钱） 可以为负
+            print(prices[index], cash, hold)
 
         return cash
 
 
-demo = Solution_714()
-print(demo.maxProfit(prices=[1, 3, 2, 8, 4, 9], fee=2)) #1 5 9  [1, 3, 2, 8, 4, 9]
+# demo = Solution_714()
+# print(demo.maxProfit(prices=[1, 3, 2, 8, 4, 9, 5], fee=2)) #1 5 9  [1, 3, 2, 8, 4, 9]
+
+
+# leetcode 121 买卖股票的最佳时机
+class Solution_121:
+    def maxProfit(self, prices):
+        if not prices or len(prices) <= 1:
+            return 0
+
+        min_value, max_value, max_profit = prices[0], prices[0], 0
+        for index in range(1, len(prices)):
+            if prices[index] < min_value:
+                min_value, max_value = prices[index], 0
+            else:
+                min_value = min(min_value, prices[index])
+                max_value = max(max_value, prices[index])
+                max_profit = max(max_profit, max_value - min_value)
+
+        return max_profit
+
+
+# demo = Solution_121()
+# print(demo.maxProfit(prices=[7,6,4,3,1]))  #[7,1,5,3,6,4]  5
+
+
+# leetcode 122 买卖股票的最佳时机 多次买卖
+class Solution_122:
+    def maxProfit(self, prices):
+        if not prices or len(prices) <= 1:
+            return 0
+
+        cash, hold = 0, -prices[0]
+        for index in range(1, len(prices)):
+            cash = max(cash, hold + prices[index])        # 目前的现金（从0开始，也就是利润）
+            hold = max(hold, cash - prices[index])        # 除去cash后剩余的钱（包括股票的钱） 可以为负
+            print(prices[index], cash, hold)
+
+        return cash
+
+
+# demo = Solution_122()
+# print(demo.maxProfit(prices=[7,1,5,3,6,4]))
+
+
+# leetcode 123  买卖股票的最佳时机  最多完成两笔交易
+class Solution_123:
+    def maxProfit(self, prices):
+        if not prices or len(prices) <= 1:
+            return 0
+
+
+
+# demo = Solution_122()
+# print(demo.maxProfit(prices=[3,3,5,0,0,3,1,4])) [3,3,5,0,0,3,1,4]
