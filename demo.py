@@ -1409,7 +1409,7 @@ class Solution_122:
 # print(demo.maxProfit(prices=[7,1,5,3,6,4]))
 
 
-# leetcode 123  买卖股票的最佳时机  最多完成两笔交易
+# leetcode 714  买卖股票的最佳时机  最多完成K笔交易
 class Solution_123:
     def maxProfit(self, prices):
         if not prices or len(prices) <= 1:
@@ -1419,3 +1419,252 @@ class Solution_123:
 
 # demo = Solution_122()
 # print(demo.maxProfit(prices=[3,3,5,0,0,3,1,4])) [3,3,5,0,0,3,1,4]
+
+
+# leetcode 303  求数组区域和
+class NumArray:
+
+    def __init__(self, nums):
+        self.fix_list = nums
+
+    def sumRange(self, i: int, j: int):
+        return sum(self.fix_list[i:j+1])
+
+
+# leetcode 530  二叉搜索树 任意两个节点的最小绝对差  中序遍历 从小到大的顺序排的
+class TreeNode_530:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+
+class Solution_530:
+    def getMinimumDifference(self, root: TreeNode_530) -> int:
+        if not root:
+            return 0
+
+        item_list, min_value = self.in_order(root=root), 9999999
+        for i in range(0, len(item_list) - 1):
+            min_value = min(min_value, item_list[i+1] - item_list[i])
+
+        return min_value
+
+    def in_order(self, root):
+        if not root:
+            return []
+
+        return self.in_order(root.left) + [root.val] + self.in_order(root.right)
+
+
+# LeetCode  669 修剪二叉搜索树   深度优先遍历
+class TreeNode_669:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+
+class Solution_669:
+    def trimBST(self, root: TreeNode, L: int, R: int):
+        if not root:
+            return None
+
+        if root.val < L:
+            return self.trimBST(root=root.left, L=L, R=R)
+
+        if root.val > R:
+            return self.trimBST(root=root.right, L=L, R=R)
+
+        if L <= root.val <= R:
+            root.left = self.trimBST(root=root.left, L=L, R=R)
+            root.right = self.trimBST(root=root.right, L=L, R=R)
+
+        return root
+
+
+# leetcode 538  把二叉搜索树转换为累加树  深度遍历 先右后左
+class TreeNode_538:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+class Solution_538:
+    def convertBST(self, root: TreeNode) -> TreeNode:
+        self.num = 0
+        def convertBST_1(root):
+            if not root:
+                return
+
+            convertBST_1(root=root.right)
+            self.num += root.val
+            root.val += self.num
+            convertBST_1(root.left)
+            return root
+
+        return root
+
+
+# leetcode 167 输入有序数组
+class Solution_167:
+    def twoSum(self, numbers, target):
+        if not numbers:
+            return []
+
+        i, j = 0, len(numbers) - 1
+        sign = 0
+        while(i < j):
+            if numbers[i] + numbers[j] == target:
+                break
+            if numbers[i] + numbers[j] < target:
+                i += 1
+            if numbers[i] + numbers[j] > target:
+                j -= 1
+
+        if numbers[i] + numbers[j] == target:
+            return [i+1, j+1]
+        else:
+            return []
+
+
+# leetcode 633 平方数之和
+class Solution_633:
+    def judgeSquareSum(self, c: int) -> bool:
+
+        import math
+        i, j = 0, int(math.sqrt(c))
+        print(j)
+        while(i < j):
+            if i * i + j * j == c:
+                break
+            if i * i + j * j < c:
+                i += 1
+            if i * i + j * j > c:
+                j -= 1
+
+        if i * i + j * j == c:
+            return True
+        else:
+            return False
+
+
+# leetcode 345  反转字符串中的元音字母
+class Solution_345:
+    def reverseVowels(self, s: str) -> str:
+        str_list = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']
+        demo_list = list(s)
+
+        i, j = 0, len(demo_list) - 1
+        while(i < j):
+            if demo_list[i] in str_list and demo_list[j] in str_list:
+                demo_list[i], demo_list[j] = demo_list[j], demo_list[i]
+                i += 1
+                j -= 1
+
+            if demo_list[i] in str_list and demo_list[j] not in str_list:
+                j -= 1
+
+            if demo_list[i] not in str_list and demo_list[j] in str_list:
+                i += 1
+
+            if demo_list[i] not in str_list and demo_list[j] not in str_list:
+                i += 1
+                j -= 1
+
+        return "".join(demo_list)
+
+
+# leetcode 680   验证回文字符串 Ⅱ  跳过那个字符串就好了
+class Solution_680:
+    def validPalindrome(self, s: str):
+        demo_list = list(s)
+        i, j = 0, len(demo_list) - 1
+        while (i < j):
+            if demo_list[i] != demo_list[j]:
+                break
+            i, j = i + 1, j - 1
+
+        return self.verify_str(temp_list=demo_list, i=i) or self.verify_str(temp_list=demo_list, i=j)
+
+    def verify_str(self, temp_list, i):
+        import copy
+        s_list = copy.copy(temp_list)
+        if not s_list:
+            return True
+        print(i, s_list)
+        del s_list[i]
+        i, j = 0, len(s_list) - 1
+        while (i < j):
+            if s_list[i] != s_list[j]:
+                return False
+            i, j = i + 1, j - 1
+
+        return True
+
+
+# LeetCode 88 合并两个有序数组  从后往前走
+class Solution_88:
+    def merge(self, nums1, m: int, nums2, n: int):
+        """
+        Do not return anything, modify nums1 in-place instead.
+        """
+        p1 = m - 1
+        p2 = n - 1
+        # set pointer for nums1
+        p = m + n - 1
+
+        # while there are still elements to compare
+        while p1 >= 0 and p2 >= 0:
+            if nums1[p1] < nums2[p2]:
+                nums1[p] = nums2[p2]
+                p2 -= 1
+            else:
+                nums1[p] = nums1[p1]
+                p1 -= 1
+            p -= 1
+
+        # add missing elements from nums2
+        nums1[:p2 + 1] = nums2[:p2 + 1]
+
+
+# leetcode 141 环形链表
+class ListNode_141:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+
+class Solution_141:
+    def hasCycle(self, head: ListNode):
+        if not head:
+            return True
+
+        slow, fast = head, head
+        while(slow and fast):
+            fast = fast.next.next if fast.next else None
+            slow = slow.next
+            if fast == slow:
+                return True
+        return False
+
+
+# leetcode 451  根据字符出现频率排序
+class Solution_451:
+    def frequencySort(self, s: str):
+        demo_list = list(s)
+        demo_dic = {}
+        for i in demo_list:
+            if i in demo_dic:
+                continue
+            demo_dic[i] = demo_list.count(i)
+
+        sort_list = sorted(demo_dic.items(), key=lambda x:x[1], reverse=True)
+        result = ""
+        for item in sort_list:
+            demo_str, count = item
+            result += demo_str * count
+
+        return result
+
+
