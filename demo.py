@@ -1668,3 +1668,31 @@ class Solution_451:
         return result
 
 
+# leetcode 524 通过删除字母匹配到字典里最长单词  双指针
+class Solution_524:
+    def findLongestWord(self, s, d):
+        max_str = ""
+        pass
+
+
+# leetcode 435 无重叠区间
+class Solution_435:
+    def eraseOverlapIntervals(self, intervals):
+        if not intervals:
+            return 0
+
+        intervals = sorted(intervals, key=lambda x:x[0])
+        last = 0
+        res = 0
+        for i in range(1, len(intervals)):
+            if intervals[last][1] > intervals[i][0]:
+                if intervals[i][1] < intervals[last][1]:
+                    last = i
+                res += 1
+            else:
+                last = i
+        return res
+
+
+demo = Solution_435()
+print(demo.eraseOverlapIntervals(intervals= [ [1,2], [2,3], [3,4], [1,3] ]))
