@@ -35,11 +35,11 @@ def erfen_find(list_b, start_num, end_num):
 #54                 二叉树
 
 
-# class TreeNode(object):
-#     def __init__(self, value, left_node=None, right_node=None):
-#         self.value = value
-#         self.left_node = left_node
-#         self.right_node = right_node
+class TreeNode(object):
+    def __init__(self, value, left_node=None, right_node=None):
+        self.value = value
+        self.left_node = left_node
+        self.right_node = right_node
 #
 #
 # leaf_6 = TreeNode(value=99)
@@ -1696,3 +1696,6 @@ class Solution_435:
 
 demo = Solution_435()
 print(demo.eraseOverlapIntervals(intervals= [ [1,2], [2,3], [3,4], [1,3] ]))
+
+
+
