@@ -1694,8 +1694,36 @@ class Solution_435:
         return res
 
 
-demo = Solution_435()
-print(demo.eraseOverlapIntervals(intervals= [ [1,2], [2,3], [3,4], [1,3] ]))
+# demo = Solution_435()
+# print(demo.eraseOverlapIntervals(intervals= [ [1,2], [2,3], [3,4], [1,3] ]))
 
 
+# leetcode 46  全排列  给定一个没有重复数字的序列，返回其所有可能的全排列。 #利用dic进行一个判断key是否已经排过序
+class Solution_46:
+    result = []
+    def permute(self, nums):
+        self.result = []
+        result_len = len(nums)
+        self.handle_list(dic_order={}, new_nums=[], left_nums=nums, total=result_len)
+        return self.result
+
+    def handle_list(self, dic_order, new_nums=[], left_nums=[], total=0):
+        if not left_nums or len(new_nums) == total:
+            self.result.append(new_nums)
+
+        for index, item in enumerate(left_nums):
+            if item in dic_order:
+                return self.handle_list(dic_order=dic_order,
+                                        new_nums=new_nums,
+                                        left_nums=left_nums[:index] + left_nums[index+1:],
+                                        total=total)
+            dic_order[item] = 1
+            self.handle_list(dic_order=dic_order,
+                             new_nums=new_nums + [item],
+                             left_nums=left_nums[:index] + left_nums[index+1:],
+                             total=total)
+            dic_order.__delitem__(item)
+
+demo = Solution_46()
+print(demo.permute(nums=[1]))
 
