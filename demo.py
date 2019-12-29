@@ -1724,6 +1724,28 @@ class Solution_46:
                              total=total)
             dic_order.__delitem__(item)
 
-demo = Solution_46()
-print(demo.permute(nums=[1]))
 
+# leetcode 47 全排列  给定一个有重复数字的序列，返回其所有可能的全排列  排序-然后判断前后是否相等
+class Solution_47:
+    result = []
+
+    def permuteUnique(self, nums):
+        if not nums: return []
+        nums.sort()
+        res = []
+
+        def backtrack(nums, tmp):
+            if not nums:
+                res.append(tmp)
+                return
+            for i in range(len(nums)):
+                if i > 0 and nums[i] == nums[i - 1]:
+                    continue
+                backtrack(nums[:i] + nums[i + 1:], tmp + [nums[i]])
+
+        backtrack(nums, [])
+        return res
+
+
+demo = Solution_47()
+print(demo.permuteUnique(nums=[1,2,1]))
