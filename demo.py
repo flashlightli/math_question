@@ -1727,7 +1727,6 @@ class Solution_46:
 
 # leetcode 47 全排列  给定一个有重复数字的序列，返回其所有可能的全排列  排序-然后判断前后是否相等
 class Solution_47:
-    result = []
 
     def permuteUnique(self, nums):
         if not nums: return []
@@ -1747,5 +1746,65 @@ class Solution_47:
         return res
 
 
-demo = Solution_47()
-print(demo.permuteUnique(nums=[1,2,1]))
+# demo = Solution_47()
+# print(demo.permuteUnique(nums=[1,2,1]))
+
+
+# leetcode 39 给定一个无重复元素的数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+# candidates 中的数字可以无限制重复被选取
+class Solution_39:
+    def combinationSum(self, candidates, target: int):
+        result = []
+        candidates = sorted(candidates)
+        self.handle_back(candidates=candidates, index=0, stash=[], result=result, target=target)
+        return result
+
+    def handle_back(self, candidates, index, stash, result, target):
+        if target == 0:
+            # 需要复制 不然stash的值会发生变化
+            import copy
+            result.append(copy.copy(stash))
+        else:
+            for i in range(index, len(candidates)):
+                if candidates[i] > target:
+                    break
+
+                stash.append(candidates[i])
+                # 只允许不必当前数字小的数字进入下次循环 防止重复 例如 [[2,2,3], [2,3,2], [3,2,2]]
+                self.handle_back(candidates=candidates, index=i, stash=stash, result=result, target=target - candidates[i])
+                stash.pop(-1)
+
+
+# demo = Solution_39()
+# print(demo.combinationSum([8,7,4,3], 11))
+
+
+class Solution_40:
+    def combinationSum2(self, candidates, target: int):
+        result = []
+        candidates = sorted(candidates)
+        self.handle_back(candidates=candidates, index=0, stash=[], result=result, target=target)
+        return result
+
+    def handle_back(self, candidates, index, stash, result, target):
+        if target == 0:
+            # 需要复制 不然stash的值会发生变化
+            import copy
+            result.append(copy.copy(stash))
+        else:
+            for i in range(index, len(candidates)):
+                # 不等于首index 而且和前面的不一样
+                if i != index and candidates[i] == candidates[i - 1]:
+                    continue
+
+                if candidates[i] > target:
+                    break
+
+                stash.append(candidates[i])
+                self.handle_back(candidates=candidates, index=i+1, stash=stash, result=result,
+                                 target=target - candidates[i])
+                stash.pop(-1)
+
+
+demo = Solution_40()
+print(demo.combinationSum2([10,1,2,7,6,1,5], 8))
