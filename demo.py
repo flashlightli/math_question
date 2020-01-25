@@ -1751,7 +1751,7 @@ class Solution_47:
 
 
 # leetcode 39 给定一个无重复元素的数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
-# candidates 中的数字可以无限制重复被选取
+# candidates 中的数字可以无限制重复被选取  回溯算法 核心思想是递归  剪枝掉不合适的 就OK了
 class Solution_39:
     def combinationSum(self, candidates, target: int):
         result = []
@@ -1806,5 +1806,120 @@ class Solution_40:
                 stash.pop(-1)
 
 
-demo = Solution_40()
-print(demo.combinationSum2([10,1,2,7,6,1,5], 8))
+# demo = Solution_40()
+# print(demo.combinationSum2([10,1,2,7,6,1,5], 8))
+
+
+# 求所有的组合 给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
+class Solution_77:
+    def combine(self, n: int, k: int):
+        result = []
+        self.handle_back(n, k, 1, [], result)
+        return result
+
+    def handle_back(self, n, k, index, stash, result):
+        if len(stash) >= k:
+            import copy
+            result.append(copy.copy(stash))
+        else:
+            for i in range(index, n+1):
+                stash.append(i)
+                self.handle_back(n, k, i+1, stash, result)
+                stash.pop(-1)
+
+
+# demo = Solution_77()
+# print(demo.combine(4, 2))
+
+
+# leetcode 78 给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）
+class Solution_78:
+    def subsets(self, nums):
+        result = []
+        for i in range(len(nums) + 1):
+            self.handle_back(nums, i, 0, [], result)
+        return result
+
+    def handle_back(self, n, k, index, stash, result):
+        if len(stash) >= k:
+            import copy
+            result.append(copy.copy(stash))
+        else:
+            for i in range(index, len(n)):
+                stash.append(n[i])
+                self.handle_back(n, k, i + 1, stash, result)
+                stash.pop(-1)
+
+
+# demo = Solution_78()
+# print(demo.subsets([0]))
+
+
+# LeetCode 79   单词搜索
+"""
+给定一个二维网格和一个单词，找出该单词是否存在于网格中。
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+
+board =
+[
+  ['A','B','C','E'],
+  ['S','F','C','S'],
+  ['A','D','E','E']
+]
+
+给定 word = "ABCCED", 返回 true.
+给定 word = "SEE", 返回 true.
+给定 word = "ABCB", 返回 false.
+
+"""
+
+
+class Solution_79:
+    width, height = 0, 0
+    has_used = []
+
+    def exist(self, board, word: str):
+        result = False
+        word = list(word)
+        self.width, self.height = len(board[0]), len(board)
+        self.has_used = []
+        for item_list in board:
+            tmp_list = []
+            for item in item_list:
+                tmp_list.append(False)
+            self.has_used.append(tmp_list)
+
+        for height, item_list in enumerate(board):
+            for width, item in enumerate(item_list):
+                result = result or self.handle_back(word, board, index=0, width=width, height=height)
+
+        return result
+
+    def handle_back(self, word, board, index, width, height):
+
+        if width > self.width - 1 or width < 0:
+            return False
+
+        if height > self.height - 1 or height < 0:
+            return False
+
+        if index >= len(word) - 1:
+            return True if word[index] == board[height][width] else False
+
+        if self.has_used[height][width]:
+            return False
+
+        if word[index] == board[height][width]:
+            self.has_used[height][width] = True
+            up = self.handle_back(word=word, board=board, index=index+1, width=width, height=height-1)
+            down = self.handle_back(word=word, board=board, index=index+1, width=width, height=height+1)
+            left = self.handle_back(word=word, board=board, index=index+1, width=width-1, height=height)
+            right = self.handle_back(word=word, board=board, index=index+1, width=width+1, height=height)
+            return up or down or left or right
+
+        else:
+            return False
+
+
+demo = Solution_79()
+print(demo.exist(board=[["C","A","A"],["A","A","A"],["B","C","D"]], word="AAB"))
