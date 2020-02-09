@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from datetime import timedelta
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -118,3 +119,21 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/2'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Shanghai'
+CELERYD_MAX_TASKS_PER_CHILD = 10
+CELERYD_LOG_FILE = os.path.join(BASE_DIR, "logs", "celery_work.log")
+CELERYBEAT_LOG_FILE = os.path.join(BASE_DIR, "logs", "celery_beat.log")
+
+# 这里是定时任务的配置
+CELERY_BEAT_SCHEDULE = {
+    'task_method': {  # 随便起的名字
+        'task': 'app.tasks.method_name',  # app 下的tasks.py文件中的方法名
+        'schedule': timedelta(seconds=10),  # 名字为task_method的定时任务, 每10秒执行一次
+    },
+}
