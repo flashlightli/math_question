@@ -132,8 +132,12 @@ CELERYBEAT_LOG_FILE = os.path.join(BASE_DIR, "logs", "celery_beat.log")
 
 # 这里是定时任务的配置
 CELERY_BEAT_SCHEDULE = {
-    'task_method': {  # 随便起的名字
-        'task': 'app.tasks.method_name',  # app 下的tasks.py文件中的方法名
-        'schedule': timedelta(seconds=10),  # 名字为task_method的定时任务, 每10秒执行一次
+    # 'weibo_joke_splider': {  # 随便起的名字
+    #     'task': 'app.tasks.weibo_joke_splider',  # app 下的tasks.py文件中的方法名
+    #     'schedule': timedelta(days=10),  # 名字为task_method的定时任务, 每10秒执行一次
+    # },
+    'test_celery': {  # 随便起的名字
+        'task': 'app.tasks.test_celery',  # app 下的tasks.py文件中的方法名
+        'schedule': timedelta(seconds=5),  # 名字为task_method的定时任务, 每10秒执行一次
     },
 }
