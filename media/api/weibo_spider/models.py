@@ -35,9 +35,9 @@ class WeiboJoke(object):
 
     @property
     def since_date(self):
-        since_date = get_config().get("since_date", "")
+        since_date = (datetime.datetime.now() + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
 
-        return since_date or "2020-02-10"
+        return since_date
 
     @property
     def cookie(self):
