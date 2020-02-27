@@ -31,8 +31,6 @@ class WeiboJoke(object):
 
     def joke_insert_db(self, data):
         result = self.joke.insert(data)
-        import ipdb
-        ipdb.set_trace()
         print(result)
 
     @property
