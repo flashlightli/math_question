@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from datetime import timedelta
+from celery.schedules import crontab
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -136,8 +137,8 @@ CELERY_BEAT_SCHEDULE = {
     #     'task': 'app.tasks.weibo_joke_splider',  # app 下的tasks.py文件中的方法名
     #     'schedule': timedelta(days=10),  # 名字为task_method的定时任务, 每10秒执行一次
     # },
-    'test_celery': {  # 随便起的名字
-        'task': 'app.tasks.test_celery',  # app 下的tasks.py文件中的方法名
-        'schedule': timedelta(seconds=5),  # 名字为task_method的定时任务, 每10秒执行一次
+    'weibo_joke_splider': {  # 随便起的名字
+        'task': 'app.tasks.weibo_joke_splider',  # app 下的tasks.py文件中的方法名
+        'schedule': crontab(minute=0, hour=7, day_of_week=[1, 3, 5, 7]) # 名字为task_method的定时任务, 每10秒执行一次
     },
 }
