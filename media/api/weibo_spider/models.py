@@ -31,11 +31,13 @@ class WeiboJoke(object):
 
     def joke_insert_db(self, data):
         result = self.joke.insert(data)
+        import ipdb
+        ipdb.set_trace()
         print(result)
 
     @property
     def since_date(self):
-        since_date = (datetime.datetime.now() + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
+        since_date = (datetime.now() + timedelta(days=-1)).strftime('%Y-%m-%d')
 
         return since_date
 
