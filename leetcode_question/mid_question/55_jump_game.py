@@ -24,16 +24,19 @@
 
 class Solution:
     def canJump(self, nums) -> bool:
+        """
+        贪心算法 计算当前的最大长度和数组长度进行比较
+        """
         num_len = len(nums)
         max_len = 0
         for index, jump in enumerate(nums):
             if max_len >= index and index + jump > max_len:
                 max_len = index + jump
 
-            if max_len >= num_len:
+            if max_len >= num_len - 1:
                 return True
 
-        return max_len >= index
+        return max_len >= num_len - 1
 
 
 test = Solution()
