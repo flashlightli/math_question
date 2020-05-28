@@ -26,15 +26,18 @@ class Solution:
     def canJump(self, nums) -> bool:
         num_len = len(nums)
         max_len = 0
-        for index, value in enumerate(nums):
-            if max_len >= index and index + value > max_len:
-                max_len = index + value
+        for index, jump in enumerate(nums):
+            if max_len >= index and index + jump > max_len:
+                max_len = index + jump
 
             if max_len >= num_len:
-                True
+                return True
 
         return max_len >= index
 
 
-
+test = Solution()
+print(test.canJump(
+    [3,2,1,0,4]
+))
 
