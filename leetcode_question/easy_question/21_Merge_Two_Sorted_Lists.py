@@ -8,6 +8,7 @@
 
 链接：https://leetcode-cn.com/problems/merge-two-sorted-lists
 """
+from leetcode_question.utils import show_list_node
 
 
 class ListNode:
@@ -18,31 +19,26 @@ class ListNode:
 
 class Solution:
     def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
-        if not l1:
-            return l2
+        # 48ms 13.7MB
+        # pre_head 是假的头节点
+        pre_head = ListNode(-1)
+        prev = pre_head
 
-        if not l2:
-            return l1
-
-        tmp = ListNode(1)
-        result = ListNode(1)
-        result.next = tmp
         while l1 and l2:
-            if l1.val < l2.val:
-                tmp = l1
+            if l1.val <= l2.val:
+                prev.next = l1.val
                 l1 = l1.next
             else:
-                tmp = l2
+                prev.next = l2.val
                 l2 = l2.next
+            prev = prev.next
 
-            tmp = tmp.next
+        prev.next = l1 if l1 is not None else l2
 
-        if not l1:
-            tmp.next = l2
-
-        if not l2:
-            tmp.next = l1
-
-        return result.next
+        return pre_head.next
 
 
+test = Solution()
+print(test.mergeTwoLists(
+    "["
+))
