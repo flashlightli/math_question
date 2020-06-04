@@ -12,23 +12,16 @@
 
 class Solution:
     def mySqrt(self, x: int) -> int:
-        res = self.recursion(int(x/2), x, x)
-
-        return res
-
-    def recursion(self, small, big, x):
-        if small * small == x:
-            return int(small)
-        elif big * big == x:
-            return int(big)
-
-        elif big - small == 1 and small * small < x < big * big:
-            return int(small)
-
-        elif x > small * small:
-            return self.recursion(min(small*2, big), max(small*2, big), x)
-        elif x < big * big:
-            return self.recursion(min(int(big/2), small), max(int(big/2), small), x)
+        # 40ms  13.5MB
+        l, r, ans = 0, x, -1
+        while l <= r:
+            mid = (l + r) // 2
+            if mid * mid <= x:
+                ans = mid
+                l = mid + 1
+            else:
+                r = mid - 1
+        return ans
 
 
 test = Solution()
