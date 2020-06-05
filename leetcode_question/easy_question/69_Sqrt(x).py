@@ -12,10 +12,12 @@
 
 class Solution:
     def mySqrt(self, x: int) -> int:
-        # 40ms  13.5MB
+        # 40ms  13.5MB  每次比较中间元素调整范围
         l, r, ans = 0, x, -1
         while l <= r:
             mid = (l + r) // 2
+            print(mid)
+
             if mid * mid <= x:
                 ans = mid
                 l = mid + 1
@@ -26,5 +28,5 @@ class Solution:
 
 test = Solution()
 print(test.mySqrt(
-    8
+    40
 ))
