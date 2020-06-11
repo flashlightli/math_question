@@ -4,10 +4,3 @@ class ListNode:
         self.next = None
 
 
-def show_list_node(head):
-    if not head:
-        return head
-
-    while head:
-        print(head.val)
-        head = head.next
