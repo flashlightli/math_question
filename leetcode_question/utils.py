@@ -4,3 +4,5 @@ class ListNode:
         self.next = None
 
 
+demo_dict = {"a": 1, "b": 3, "c": 2}
+print(sorted(demo_dict.items(), key=lambda x: x[1]))

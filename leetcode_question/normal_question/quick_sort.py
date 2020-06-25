@@ -55,3 +55,61 @@ def partition(arr, start, end):
 
 print(quick_sort_2([3, 1, 6, 2, 4]))
 
+
+def quick_sort(demo):
+    if len(demo) <= 1:
+        return demo
+
+    stack = []
+    stack.append(len(demo) - 1)
+    stack.append(0)
+    while stack:
+        l = stack.pop()
+        r = stack.pop()
+        index = partition_2(demo, l, r)
+        if l < index - 1:
+            stack.append(index - 1)
+            stack.append(l)
+        if r > index + 1:
+            stack.append(r)
+            stack.append(index + 1)
+
+    return demo
+
+
+def partition_2(demo, l, r):
+    pivot = demo[l]
+    while l < r:
+        while l < r and pivot <= demo[r]:
+            r -= 1
+        demo[l] = demo[r]
+        while l < r and pivot >= demo[l]:
+            l += 1
+        demo[r] = demo[l]
+
+    demo[l] = pivot
+    return l
+
+
+class SkipListNode(object):
+    def __init__(self):
+        self.val = None
+        self.next = None
+        self.down = None
+
+
+def skip_list_search(head, target):
+    """
+    跳表查询的实现  插入的话节点是随机的
+    """
+    tmp = head
+    curr = head
+    while curr:
+        if curr.val == target:
+            return True
+        else:
+            tmp = curr if curr.down else tmp
+            curr = curr.next
+
+    return skip_list_search(tmp, target)
+

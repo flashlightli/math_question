@@ -26,3 +26,22 @@ def swap_list(head):
 
     return prev.next
 
+
+def swap_reverse(head):
+    prev, curr = None, head
+    while curr.next:
+        curr, prev, prev.next = curr.next, curr, prev
+
+    return prev
+
+
+def swap_two_list(head):
+    prev, prev.next = ListNode(-1), head
+    while prev.next and prev.next.next:
+        a = prev.next
+        b = a.next
+        prev.next, a.next, b.next = b, b.next, a
+        prev = a
+
+    return prev.next
+

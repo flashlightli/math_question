@@ -13,4 +13,21 @@
 
 class Solution:
     def dailyTemperatures(self, T):
-        pass
+        # 544MS 13.2MB
+        # 单调栈
+        result = [0] * len(T)
+        stack = []
+        for i in range(len(T)):
+            tmp = T[i]
+            while stack and T[stack[-1]] < tmp:
+                p_index = stack.pop()
+                result[p_index] = i - p_index
+            stack.append(i)
+
+        return result
+
+
+test = Solution()
+print(test.dailyTemperatures(
+    [73, 74, 75, 71, 69, 72, 76, 73]
+))

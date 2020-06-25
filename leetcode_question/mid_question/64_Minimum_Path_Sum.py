@@ -26,18 +26,18 @@ class Solution:
 
         for index_i, i in enumerate(grid):
             path_sum.append([])
-            for index_j, j in enumerate(grid[i]):
+            for index_j, j in enumerate(grid[index_i]):
                 if index_i == 0 and index_j == 0:
                     path_sum[index_i].append(j)
 
                 if index_i != 0 and index_j == 0:
-                    path_sum[index_i].append(path_sum[index_i][-1] + j)
+                    path_sum[index_i].append(path_sum[index_i-1][0] + j)
 
                 if index_j != 0 and index_i == 0:
-                    path_sum[index_i].append(path_sum[0][index_j] + j)
+                    path_sum[index_i].append(path_sum[0][index_j-1] + j)
 
                 if index_j and index_i:
-                    path_sum[index_i].append(min(path_sum[index_i-1][j] + j, path_sum[index_i][index_j-1] + j))
+                    path_sum[index_i].append(min(path_sum[index_i-1][index_j] + j, path_sum[index_i][index_j-1] + j))
 
         return path_sum[-1][-1]
 
