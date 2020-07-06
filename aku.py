@@ -34,6 +34,7 @@ print(demo.d)
 # f(user_id=193,uui=908)
 class Borg(object):
     _state = {}
+
     def __new__(cls, *args, **kw):
         ob = super(Borg, cls)
         ob = ob.__new__(cls, *args, **kw)
@@ -222,3 +223,127 @@ for x in it1:
 
 for x in it2:
     print(x)
+
+
+print("==-==")
+def test_pr(x):
+    print("====", x)
+    return x + 1
+
+
+def gen_test1():
+    print("before 222")
+    yield test_pr(2)
+    print("222")
+
+    yield test_pr(3)
+
+
+def gen_test2():
+    print("before 222")
+    yield test_print(3)
+    print("222")
+
+
+q1 = gen_test1()
+# q2 = gen_test2()
+# import pdb
+# pdb.set_trace()
+print(next(q1), next(q1))
+
+
+print("111111====11111")
+def test_gen_1():
+    while True:
+        print("1")
+        yield 2
+        print("3")
+
+
+qq = test_gen_1()
+print(next(qq))
+print(next(qq))
+
+print("12======")
+def generator2():
+    num = yield 1
+    print("--1--", num)
+    yield 2
+    yield 3
+    return 4
+
+gen = generator2()
+print(gen.send(None))  # 如果使用send()的时候，第一个传入的值必须是None，因为当调用send()的时候，才执行到第一个yield，只能输出一个值，不能接收值。
+print(gen.send(101))
+print(gen.send(None))
+gen.close()
+
+
+def retry(times=1):
+    def decor(func):
+        def wrapper(*args, **kwargs):
+            curr_time = 0
+            result = None
+            while curr_time < times:
+                try:
+                    result = func(*args, **kwargs)
+                except:
+                    curr_time += 1
+                else:
+                    break
+
+            return result
+        return wrapper
+    return decor
+
+
+class TreeNode(object):
+    def __init__(self):
+        self.value = None
+        self.left = None
+        self.right = None
+
+
+def get_right_list(root):
+    result = []
+    if not root:
+        return []
+
+    tmp_node = [root]
+    while tmp_node:
+        node_value = None
+        tmp_node_list = []
+        for node in tmp_node:
+            tmp_node_list.append(node.left)
+            tmp_node_list.append(node.right)
+            node_value = node.value
+        tmp_node = tmp_node_list
+        result.append(node_value)
+
+    return result
+
+
+class Test(object):
+    def __init__(self):
+        self.name = "xxx"
+        print('这是构造函数')
+
+    def __del__(self):
+        print('这是析构函数')
+
+    def __getitem__(self, item):
+        print("111", item)
+        return self.__dict__.get(item, "100")
+
+    def __getattr__(self, item):
+        print("i am attr")
+        return "2222"
+
+
+demo = Test()
+# print(dir(demo))
+# print(demo['d'])
+# print(demo['c'](user_id=2089278, a=2111))
+print(demo.d)
+print(demo['w'])
+print(demo)

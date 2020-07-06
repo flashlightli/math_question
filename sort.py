@@ -142,52 +142,43 @@ def merge_sort(data):
 
 # print(merge_sort(data=data_list))
 
+"""
+堆排序
+从小到大排序 构建大顶堆(父节点元素大于子节点)
+a.将无需序列构建成一个堆，根据升序降序需求选择大顶堆或小顶堆;
+b.将堆顶元素与末尾元素交换，将最大元素"沉"到数组末端;
+c.重新调整结构，使其满足堆定义，然后继续交换堆顶元素与当前末尾元素，反复执行调整+交换步骤，直到整个序列有序。
+"""
+def heapify(arr, n, i):
+    largest = i
+    l = 2 * i + 1  # left = 2*i + 1
+    r = 2 * i + 2  # right = 2*i + 2
 
-from collections import deque
+    if l < n and arr[i] < arr[l]:
+        largest = l
 
+    if r < n and arr[largest] < arr[r]:
+        largest = r
 
-def swap_param(L, i, j):
-    L[i], L[j] = L[j], L[i]
-    return L
+    if largest != i:
+        arr[i], arr[largest] = arr[largest], arr[i]  # 交换
 
-
-def heap_adjust(L, start, end):
-    temp = L[start]
-
-    i = start
-    j = 2 * i
-
-    while j <= end:
-        if (j < end) and (L[j] < L[j + 1]):
-            j += 1
-        if temp < L[j]:
-            L[i] = L[j]
-            i = j
-            j = 2 * i
-        else:
-            break
-    L[i] = temp
+        heapify(arr, n, largest)
 
 
-def heap_sort(L):
-    L_length = len(L) - 1
+def heapSort(arr):
+    n = len(arr)
 
-    first_sort_count = L_length // 2
-    for i in range(first_sort_count):
-        heap_adjust(L, first_sort_count - i, L_length)
+    # Build a maxheap.
+    for i in range(n, -1, -1):
+        heapify(arr, n, i)
 
-    for i in range(L_length - 1):
-        L = swap_param(L, 1, L_length - i)
-        heap_adjust(L, 1, L_length - i - 1)
+    # 一个个交换元素
+    for i in range(n - 1, 0, -1):
+        arr[i], arr[0] = arr[0], arr[i]  # 交换
+        heapify(arr, i, 0)
 
-    return [L[i] for i in range(1, len(L))]
-
-
-def main():
-    L = deque([50, 16, 30, 10, 60,  90,  2, 80, 70])
-    L.appendleft(0)
-    print(heap_sort(L))
+    return arr
 
 
-if __name__ == '__main__':
-    main()
+print(heapSort([70, 90, 80, 60, 30, 2, 10, 16, 50]))

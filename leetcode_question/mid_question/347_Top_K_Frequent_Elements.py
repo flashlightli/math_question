@@ -36,6 +36,7 @@ class Solution:
         tmp_list = sorted(tmp_dict.items(), key=lambda x: x[1], reverse=True)
         return [i[0] for i in tmp_list][:k]
 
+    # 需要补充堆排序
 
 test = Solution()
 print(test.topKFrequent(
