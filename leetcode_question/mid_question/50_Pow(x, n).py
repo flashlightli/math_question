@@ -48,5 +48,6 @@ class Solution:
 
 test = Solution()
 print(test.myPow(
-    2, -2
+    1.00001,
+    e123456
 ))

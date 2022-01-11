@@ -27,35 +27,40 @@ nums2 = [3, 4]
 
 
 class Solution:
-    def findMedianSortedArrays(self, nums1, nums2) -> float:
-        if len(nums1) > len(nums2):
-            short_nums, long_nums = nums2, nums1
-            short_nums_len, long_nums_len = len(nums2), len(nums1)
+    def findMedianSortedArrays(self, nums1, nums2):
+        # 转变成求第K小的元素
+        is_single = len(nums1 + nums2) % 2
+        if is_single:
+            return self.findk(nums1, nums2, len(nums1 + nums2 + [0]) // 2)
         else:
-            short_nums, long_nums = nums1, nums2
-            short_nums_len, long_nums_len = len(nums1), len(nums2)
+            return (self.findk(nums1, nums2, len(nums1 + nums2) // 2) + self.findk(nums1, nums2, len(nums1 + nums2) // 2 + 1)) / 2
 
-        short_mid = short_nums_len // 2
-        long_mid = long_nums_len // 2
+    def findk(self, nums1, nums2, k):
+        # 以K为长度的二分查找
+        p1, p2 = 0, 0
         while True:
-            if short_nums[short_mid] == long_nums[long_mid]:
-                return short_nums[short_mid]
-            elif short_nums[short_mid] > long_nums[long_mid]:
-                short_mid -= 1
-                long_mid += 1
-            elif short_nums[short_mid] < long_nums[long_mid]:
-                short_mid += 1
-                long_mid -= 1
+            if len(nums1) == p1:
+                return nums2[p2 + k - 1]
 
-            if short_nums[short_mid] < long_nums[long_mid + 1] and short_nums[short_mid + 1] > long_nums[long_mid]:
-                if (short_nums_len + long_nums_len) % 2:
-                    return short_nums[short_mid] if short_nums[short_mid] <= long_nums[long_mid] else long_nums[long_mid]
-                else:
-                    sums = min(short_nums[short_mid + 1], long_nums[long_mid + 1]) + max(short_nums[short_mid], long_nums[long_mid])
-                    return sums / 2
+            if len(nums2) == p2:
+                return nums1[p1 + k - 1]
+
+            if k == 1:
+                return min(nums1[p1],  nums2[p2])
+
+            new_p1 = min(len(nums1) - 1, p1 + k // 2 - 1)   # 每个数组 K/2 的范围查找
+            new_p2 = min(len(nums2) - 1, p2 + k // 2 - 1)
+            if nums1[new_p1] <= nums2[new_p2]:
+                k = k - (new_p1 - p1 + 1)   # K去掉小于中位数的个数
+                p1 = new_p1 + 1             # 去掉的包括new_p1 所以p1要 + 1
+            else:
+                k = k - (new_p2 - p2 + 1)
+                p2 = new_p2 + 1
+
+
 
 
 test = Solution()
 print(test.findMedianSortedArrays(
-    [1, 2, 5], [3, 4, 6]
+    [1, 2], [3, 4]
 ))

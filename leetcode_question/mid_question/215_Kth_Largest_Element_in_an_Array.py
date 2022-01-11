@@ -27,30 +27,29 @@ class Solution:
         :rtype: int
         """
 
-        # 替换nums[i]后维护最小堆：自顶向下调整新元素位置，直至该值满足(parent value < son value)
-        def shift(i, k):
-            flag = 0
-            while (i * 2 + 1) < k and flag == 0:
-                t = i
-                if nums[i] > nums[2 * i + 1]:
-                    t = 2 * i + 1
-                if (i * 2 + 2) < k and nums[t] > nums[2 * i + 2]:
-                    t = 2 * i + 2
-                if t == i:
-                    flag = 1
-                else:
-                    nums[i], nums[t] = nums[t], nums[i]
-                    i = t
+        heapsize = len(nums)
 
-                    # O(k):建立大小为K的最小堆， k/2-1是最后一个非叶节点，因为shift是向下调整，所以倒序从最下面出发，不然(4 32 1)->(2 34 1)->(2 14 3)->(2 14 3) 结果不对
+        def maxheap(a, i, length):
+            l = 2 * i + 1
+            r = 2 * i + 2
+            large = i
+            if l < length and a[l] > a[large]:
+                large = l
+            if r < length and a[r] > a[large]:
+                large = r
+            if large != i:
+                a[large], a[i] = a[i], a[large]
+                maxheap(a, large, length)
 
-        for i in range(k // 2, -1, -1):
-            shift(i, k)
+        for i in range(heapsize - 1, -1, -1):
+            maxheap(nums, i, heapsize)
 
-        # O((N-k)logK)，剩余元素依次比较替换
-        for i in range(k, len(nums)):
-            if nums[0] < nums[i]:
-                nums[0] = nums[i]
-                shift(0, k)
-        return nums[0]
-        # sum=O(Nlogk-k(logK-1))
+        for i in range(heapsize - 1, -1, -1):
+            print(nums)
+            nums[0], nums[i] = nums[i], nums[0]
+            maxheap(nums, 0, i)
+        return nums
+
+
+test = Solution()
+print(test.findKthLargest([3,6,2,4,1,8], 2))

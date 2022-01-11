@@ -155,3 +155,18 @@ def heapSort(arr):
 
 
 print(heapSort([2, 7, 4, 3, 8, 9]))
+
+
+def merge_sort(nums1, nums2):
+    m = []
+    i, j = 0, 0
+    while nums1 and nums2:
+        if nums1[i] <= nums2[j]:
+            temp = nums1.pop(i)
+            m.append(temp)
+        else:
+            temp = nums2.pop(j)
+            m.append(temp)
+
+    m = m + nums1 + nums2
+    return m
